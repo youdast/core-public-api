@@ -13,3 +13,13 @@ func NewUserHttpHandler(app *fiber.App, handler *UserHandler) {
 	users.Get("/:id", handler.GetByID)
 	users.Post("/", handler.Store)
 }
+
+func NewPortfolioHttpHandler(app *fiber.App, handler *PortfolioHandler) {
+	api := app.Group("/api")
+	v1 := api.Group("/v1")
+	portfolio := v1.Group("/portfolio")
+
+	portfolio.Get("/profile", handler.GetProfile)
+	portfolio.Get("/skills", handler.GetSkills)
+	portfolio.Get("/projects", handler.GetProjects)
+}

@@ -1,0 +1,257 @@
+basePath: /
+definitions:
+  domain.Profile:
+    properties:
+      description:
+        type: string
+      email:
+        type: string
+      github:
+        type: string
+      id:
+        type: integer
+      linkedin:
+        type: string
+      name:
+        type: string
+      resume:
+        type: string
+      role:
+        type: string
+    type: object
+  domain.Project:
+    properties:
+      demo_link:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      source_link:
+        type: string
+      tech_stack:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+    type: object
+  domain.Skill:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  domain.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  utils.ApiResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+      metadata:
+        $ref: '#/definitions/utils.Metadata'
+      status:
+        type: string
+    type: object
+  utils.Metadata:
+    properties:
+      timestamp:
+        type: string
+      version:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+  description: This is a Clean Architecture REST API service.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Core Public API
+  version: "1.0"
+paths:
+  /api/v1/portfolio/profile:
+    get:
+      consumes:
+      - application/json
+      description: Get the main profile information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.Profile'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ApiResponse'
+      summary: Get portfolio profile
+      tags:
+      - portfolio
+  /api/v1/portfolio/projects:
+    get:
+      consumes:
+      - application/json
+      description: Get list of projects
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/domain.Project'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ApiResponse'
+      summary: Get projects
+      tags:
+      - portfolio
+  /api/v1/portfolio/skills:
+    get:
+      consumes:
+      - application/json
+      description: Get list of skills
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/domain.Skill'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ApiResponse'
+      summary: Get skills
+      tags:
+      - portfolio
+  /api/v1/users:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/domain.User'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ApiResponse'
+      summary: Get all users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the input payload
+      parameters:
+      - description: User Payload
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ApiResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ApiResponse'
+      summary: Create a new user
+      tags:
+      - users
+  /api/v1/users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get details of a specific user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.User'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ApiResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ApiResponse'
+      summary: Get user by ID
+      tags:
+      - users
+swagger: "2.0"
