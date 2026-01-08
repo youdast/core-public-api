@@ -21,6 +21,8 @@ type Skill struct {
 type Project struct {
 	ID          uint    `json:"id" gorm:"primaryKey"`
 	Title       string  `json:"title"`
+	Image       string  `json:"image"`
+	Role        string  `json:"role"`
 	Description string  `json:"description"`
 	Skills      []Skill `json:"tech_stacks" gorm:"many2many:tech_stacks;"`
 	SourceLink  string  `json:"source_link"`
