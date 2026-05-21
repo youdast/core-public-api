@@ -23,6 +23,9 @@ type Config struct {
 	SMTPPort     int    `mapstructure:"SMTP_PORT"`
 	SMTPEmail    string `mapstructure:"SMTP_EMAIL"`
 	SMTPPassword string `mapstructure:"SMTP_PASSWORD"`
+	// Security Config
+	AllowedIPs   string `mapstructure:"ALLOWED_IPS"`
+	AllowedHosts string `mapstructure:"ALLOWED_HOSTS"`
 }
 
 func LoadConfig() (*Config, error) {
@@ -46,6 +49,10 @@ func LoadConfig() (*Config, error) {
 	// SMTP Defaults (Gmail)
 	viper.SetDefault("SMTP_HOST", "smtp.gmail.com")
 	viper.SetDefault("SMTP_PORT", 587)
+
+	// Security Defaults
+	viper.SetDefault("ALLOWED_IPS", "")
+	viper.SetDefault("ALLOWED_HOSTS", "")
 
 	// Try to load .env from current directory
 	viper.SetConfigFile(".env")

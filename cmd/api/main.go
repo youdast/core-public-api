@@ -58,9 +58,14 @@ func main() {
 	portfolioHandler := http.NewPortfolioHandler(portfolioUsecase)
 
 	// 4. Init Fiber
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		ProxyHeader: fiber.HeaderXForwardedFor,
+	})
 	app.Use(logger.New())
 	app.Use(cors.New())
+
+	// Security Middleware
+	// app.Use(middleware.SecurityMiddleware(cfg))
 
 	// Swagger Route
 	app.Get("/swagger/*", swagger.HandlerDefault)
